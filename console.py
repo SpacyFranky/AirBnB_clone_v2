@@ -55,7 +55,9 @@ class HBNBCommand(cmd.Cmd):
                     d[k] = float(v)
                 else:
                     d[k] = int(v)
-            obj = eval("{}({})".format(my_list[0], d))
+            obj = eval("{}()".format(my_list[0]))
+            obj.__dict__.update(d)
+            print(obj)
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
