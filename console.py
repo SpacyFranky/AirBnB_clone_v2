@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel, saves it
         Exceptions:
             SyntaxError: when there is no args given
-            NameError: when there is no object taht has the name
+            NameError: when there is no object that has the name
         """
         try:
             if not line:
@@ -48,7 +48,8 @@ class HBNBCommand(cmd.Cmd):
                 k = item_list[0]
                 v = item_list[1]
                 if v[0] == '"':
-                    nv0 = v.replace('"', '\\"')
+                    s = v[1:-1]
+                    nv0 = s.replace('"', r'\"')
                     nv = nv0.replace('_', ' ')
                     d[k] = nv
                 elif '.' in v:
