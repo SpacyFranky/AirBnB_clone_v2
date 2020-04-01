@@ -2,7 +2,12 @@
 """This is the base model class for AirBnB"""
 import uuid
 import models
-from datetime import datetime
+from datetime import datetime as dt
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+
+
+Base = declarative_base()
 
 
 class BaseModel:
@@ -22,14 +27,32 @@ class BaseModel:
         """
         if kwargs:
             for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key != "__class__":
+                if key == "created_at":
+                    self.created_at = Column(
+                        DateTime,
+                        default=dt.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"),
+                        nullable=False
+                    )
+                elif key == "updated_at":
+                    self.updated_at = Column(
+                        DateTime,
+                        default=dt.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"),
+                        nullable=False
+                    )
+                elif key != "__class__":
                     setattr(self, key, value)
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
-            models.storage.new(self)
+            self.id = Column(
+                String(60),
+                primary_key=True,
+                nullable=False
+            )
+            self.created_at = Column(
+                DateTime,
+                default=dt.utcnow(),
+                nullable=False
+            )
+            self.updated_at = self.created_at
 
     def __str__(self):
         """returns a string
@@ -47,7 +70,8 @@ class BaseModel:
     def save(self):
         """updates the public instance attribute updated_at to current
         """
-        self.updated_at = datetime.now()
+        self.updated_at = dt.now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
@@ -56,7 +80,13 @@ class BaseModel:
             returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
+        my_dict.pop('_sa_instance_state', None)
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
         return my_dict
+
+    def delete(self):
+        """Delete the current instance from the storage.
+        """
+        models.storage.delete(self)
