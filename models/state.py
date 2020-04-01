@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the state class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer,  String, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
 import models
 
@@ -20,7 +20,7 @@ class State(BaseModel, Base):
         backref="state",
     )
 
-    @cities.getter
+    @property
     def cities(self, state_id):
         """Returns the list of Cities with the correspondant state_id
         """

@@ -4,8 +4,8 @@ with the MySQL database.
 """
 
 
-from model.BaseModel import Base
-from sqlalchemy import create_engine, Metadata, Table
+from models.base_model import Base
+from sqlalchemy import create_engine, MetaData, Table
 from os import environ as env
 from sqlalchemy.orm import sessionmaker, scoped_session
 
@@ -19,7 +19,7 @@ class DBStorage():
     def __init__(self):
         """Constructor of the DBStorage class.
         """
-        url = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
+        url = "mysql+mysqldb://{}:{}@{}/{}".format(
             env['HBNB_MYSQL_USER'],
             env['HBNB_MYSQL_PWD'],
             env['HBNB_MYSQL_HOST'],
