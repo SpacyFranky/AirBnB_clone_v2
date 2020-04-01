@@ -19,7 +19,7 @@ class DBStorage():
     def __init__(self):
         """Constructor of the DBStorage class.
         """
-        url = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
+        url = "mysql+mysqldb://{}:{}@{}/{}".format(
             env['HBNB_MYSQL_USER'],
             env['HBNB_MYSQL_PWD'],
             env['HBNB_MYSQL_HOST'],
