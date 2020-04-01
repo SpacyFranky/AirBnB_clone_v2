@@ -6,7 +6,7 @@ with the MySQL database.
 
 from models.base_model import Base
 from sqlalchemy import create_engine, MetaData, Table
-from os import environ as env
+from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 
@@ -21,18 +21,14 @@ class DBStorage():
         """Constructor of the DBStorage class.
         """
         url = "mysql+mysqldb://{}:{}@{}/{}".format(
-            env['HBNB_MYSQL_USER'],
-            env['HBNB_MYSQL_PWD'],
-            env['HBNB_MYSQL_HOST'],
-            env['HBNB_MYSQL_DB']
+            getenv('HBNB_MYSQL_USER'),
+            getenv('HBNB_MYSQL_PWD'),
+            getenv('HBNB_MYSQL_HOST'),
+            getenv('HBNB_MYSQL_DB')
         )
         self.__engine = create_engine(url, pool_pre_ping=True)
-        meta = MetaData()
-        meta.reflect(bind=self.__engine)
-        if  env.get('HBNB_ENV') is not None and  env['HBNB_ENV'] == 'test':
-            for table in reversed(meta.sorted_tables):
-                self.__engine.execute(table.delete())
-
+        if getenv('HBNB_ENV') is not None and  env['HBNB_ENV'] == 'test':
+            Base.metadata.drop_all(self.__engine)
     def all(self, cls=None):
         """Query on the current database session all objects depending
         on the class name argument (cls).
@@ -44,7 +40,7 @@ class DBStorage():
                 d[k] = obj
             return(d)
         else:
-            tables = metadata.tables.keys()
+            tables = Base.metadata.tables.keys()
             for table in tables:
                 for obj in self.__session.query(table):
                     k = str(cls) + '.' + obj.id
@@ -76,4 +72,3 @@ class DBStorage():
             expire_on_commit=False
         )
         Session = scoped_session(session_factory)
-        self.__session = Session()
