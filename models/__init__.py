@@ -9,8 +9,8 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-
-if env['HBNB_TYPE_STORAGE'] == 'db':
+str_type = 'HBNB_TYPE_STORAGE'
+if env.get(str_type) is not None and env[str_type] == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
     storage.reload()

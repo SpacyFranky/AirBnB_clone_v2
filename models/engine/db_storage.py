@@ -13,6 +13,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 class DBStorage():
     """The database storage engine of our application.
     """
+
     __engine = None
     __session = None
 
@@ -28,7 +29,7 @@ class DBStorage():
         self.__engine = create_engine(url, pool_pre_ping=True)
         meta = MetaData()
         meta.reflect(bind=self.__engine)
-        if env['HBNB_ENV'] == 'test':
+        if  env.get('HBNB_ENV') is not None and  env['HBNB_ENV'] == 'test':
             for table in reversed(meta.sorted_tables):
                 self.__engine.execute(table.delete())
 
