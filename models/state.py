@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """This is the state class"""
 from models.base_model import BaseModel, Base
-from models import storage
+from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+from models
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name
@@ -12,10 +14,15 @@ class State(BaseModel):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     id = Column(String(60), nullable=False, primary_key=True)
+    cities = relationship(
+        "City",
+        cascade="all,delete",
+        backref="state",
+    )
 
-    @state.getter
-    def state(self, state_id):
+    @cities.getter
+    def cities(self, state_id):
         """Returns the list of Cities with the correspondant state_id
         """
-        r = {k: v for k, v in storage.all(City) if v['state_id'] == State.id}
-        return(r)
+        cities = models.storage.all(City)
+        

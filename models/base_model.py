@@ -23,12 +23,12 @@ class BaseModel:
     created_at = Column(
         DateTime,
         nullable=False,
-        default=datetime.datetime.utcnow
+        default=dt.utcnow()
     )
     updated_at = Column(
         DateTime,
         nullable=False,
-        default=datetime.datetime.utcnow
+        default=dt.utcnow()
     )
 
     def __init__(self, *args, **kwargs):

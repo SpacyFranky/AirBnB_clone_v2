@@ -26,7 +26,6 @@ class DBStorage():
             env['HBNB_MYSQL_DB']
         )
         self.__engine = create_engine(url, pool_pre_ping=True)
-        Base.metadata.create_all(self.__engine)
         meta = MetaData()
         meta.reflect(bind=self.__engine)
         if env['HBNB_ENV'] == 'test':
