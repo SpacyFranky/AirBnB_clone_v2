@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """This is the state class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer,  String, ForeignKey
 from sqlalchemy.orm import relationship
-from models
+import models
 
 
 class State(BaseModel, Base):
