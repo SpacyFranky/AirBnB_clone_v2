@@ -7,7 +7,7 @@ with the MySQL database.
 from model.BaseModel import Base
 from sqlalchemy import create_engine, Metadata, Table
 from os import environ as env
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage():
@@ -27,8 +27,7 @@ class DBStorage():
         )
         self.__engine = create_engine(url, pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
-        self.__session = sessionmaker(bind=self.__engine)
-        meta =  MetaData()
+        meta = MetaData()
         meta.reflect(bind=self.__engine)
         if env['HBNB_ENV'] == 'test':
             for table in reversed(meta.sorted_tables):
@@ -65,18 +64,16 @@ class DBStorage():
     def delete(self, obj=None):
         """Delete from the current database session obj if not None.
         """
-        '''
         self.__session.delete(obj)
-        '''
-        if obj is not None:
-            tables = metadata.tables.keys()
-            for table in tables:
-                if table == obj.__class__.__name__:
-                    query = self.__session.query(table).filter(table.id==obj.id)
-                    break
-            query.delete()
 
     def reload(self):
         """Create all tables in the database and create the current databse
         session.
         """
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(
+            bind=self.__engine,
+            expire_on_commit=False
+        )
+        Session = scoped_session(session_factory)
+        self.__session = Session()
