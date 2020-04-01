@@ -4,7 +4,7 @@ with the MySQL database.
 """
 
 
-from model.BaseModel import Base
+from models.BaseModel import Base
 from sqlalchemy import create_engine, Metadata, Table
 from os import environ as env
 from sqlalchemy.orm import sessionmaker, scoped_session
