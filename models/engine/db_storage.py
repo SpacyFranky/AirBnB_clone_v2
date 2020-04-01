@@ -65,6 +65,9 @@ class DBStorage():
     def delete(self, obj=None):
         """Delete from the current database session obj if not None.
         """
+        '''
+        self.__session.delete(obj)
+        '''
         if obj is not None:
             tables = metadata.tables.keys()
             for table in tables:

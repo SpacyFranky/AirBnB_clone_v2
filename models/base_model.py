@@ -15,6 +15,22 @@ class BaseModel:
     for other classes
     """
 
+    id = Column(
+        String(60),
+        nullable=False,
+        primary_key=True
+    )
+    created_at = Column(
+        DateTime,
+        nullable=False,
+        default=datetime.datetime.utcnow
+    )
+    updated_at = Column(
+        DateTime,
+        nullable=False,
+        default=datetime.datetime.utcnow
+    )
+
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
@@ -27,32 +43,14 @@ class BaseModel:
         """
         if kwargs:
             for key, value in kwargs.items():
-                if key == "created_at":
-                    self.created_at = Column(
-                        DateTime,
-                        default=dt.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"),
-                        nullable=False
-                    )
-                elif key == "updated_at":
-                    self.updated_at = Column(
-                        DateTime,
-                        default=dt.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"),
-                        nullable=False
-                    )
-                elif key != "__class__":
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
                     setattr(self, key, value)
         else:
-            self.id = Column(
-                String(60),
-                primary_key=True,
-                nullable=False
-            )
-            self.created_at = Column(
-                DateTime,
-                default=dt.utcnow(),
-                nullable=False
-            )
-            self.updated_at = self.created_at
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+
 
     def __str__(self):
         """returns a string
