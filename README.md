@@ -72,3 +72,5 @@ Ex:
 * All files are executable
 ## Python Unit Tests
 * There are still no unit tests for this project
+## New Stuff
+* In this updated of HBNB 2.0 (Air_BnB) we created a database storage engine with mysql (using sqlalchemy)
