@@ -13,20 +13,19 @@ class State(BaseModel, Base):
     """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    id = Column(String(60), nullable=False, primary_key=True)
     cities = relationship(
         "City",
         cascade="all,delete",
-        backref="state",
+        backref="state"
     )
 
     @property
-    def cities(self, state_id):
+    def cities(self):
         """Returns the list of Cities with the correspondant state_id
         """
         cities = models.storage.all(City)
         d = {}
         for k, v in cities.items():
-            if v.state_id == cls.id:
+            if v.state_id == self.id:
                 d[k] = v
         return(d)

@@ -8,6 +8,12 @@ from models.base_model import Base
 from sqlalchemy import create_engine, MetaData, Table
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class DBStorage():
@@ -16,6 +22,7 @@ class DBStorage():
 
     __engine = None
     __session = None
+    my_classes = ["State", "City"]
 
     def __init__(self):
         """Constructor of the DBStorage class.
@@ -41,10 +48,9 @@ class DBStorage():
                 d[k] = obj
             return(d)
         else:
-            tables = Base.metadata.tables.keys()
-            for table in tables:
-                for obj in self.__session.query(table):
-                    k = str(cls) + '.' + obj.id
+            for cl in self.my_classes:
+                for obj in self.__session.query(eval(cl)):
+                    k = str(cl) + '.' + obj.id
                     d[k] = obj
             return(d)
 
