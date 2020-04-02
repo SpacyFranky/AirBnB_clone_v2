@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """This is the place class"""
+import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Table, Column, Integer, ForeignKey, String, Float
 from sqlalchemy.orm import relationship
 from models.review import Review
+from models.amenity import Amenity
 
 
 class Place(BaseModel, Base):
@@ -32,14 +34,16 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    amenity_ids = []
+    # amenity_ids = []
     reviews = relationship(
         "Review",
         cascade="all,delete",
         backref='place'
     )
 
-    place_amenity = Table('place_amenity', metadata=Base.metadata,
+    metadata = Base.metadata
+
+    place_amenity = Table('place_amenity', metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id'),
                                  primary_key=True,
@@ -61,9 +65,9 @@ class Place(BaseModel, Base):
         """
         """
         amenities = models.storage.all(Amenity)
-        d = {}
+        d = []
         for k,v in amenities.items():
-            if v.amenity_ids == self.id:
+            if v.id == self.id:
                 d[k] = v
         return(d)
 
