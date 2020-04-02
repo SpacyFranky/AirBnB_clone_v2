@@ -3,8 +3,6 @@
 The Database Storage Engine that will connect our python classes
 with the MySQL database.
 """
-
-
 from models.base_model import Base
 from sqlalchemy import create_engine, MetaData, Table
 from os import getenv
@@ -17,7 +15,7 @@ from models.place import Place
 from models.review import Review
 
 
-class DBStorage():
+class DBStorage:
     """The database storage engine of our application.
     """
 
@@ -35,7 +33,7 @@ class DBStorage():
             getenv('HBNB_MYSQL_DB')
         )
         self.__engine = create_engine(url, pool_pre_ping=True)
-        if getenv('HBNB_ENV') is not None and env['HBNB_ENV'] == 'test':
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):

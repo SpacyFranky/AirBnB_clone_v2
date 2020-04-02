@@ -11,8 +11,7 @@ from models.place import Place
 from models.review import Review
 
 
-str_type = 'HBNB_TYPE_STORAGE'
-if getenv(str_type) is not None and getenv(str_type) == 'db':
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
     storage.reload()
