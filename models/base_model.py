@@ -69,7 +69,9 @@ class BaseModel:
         """
         self.updated_at = dt.now()
         models.storage.new(self)
+        print("==================After new(self)===============")
         models.storage.save()
+        print("==================After save()==================")
 
     def to_dict(self):
         """creates dictionary of the class  and returns
