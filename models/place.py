@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, ForeignKey, String, Float
+from sqlalchemy import Table, Column, Integer, ForeignKey, String, Float
 from sqlalchemy.orm import relationship
 from models.review import Review
 
@@ -38,6 +38,41 @@ class Place(BaseModel, Base):
         cascade="all,delete",
         backref='place'
     )
+
+    place_amenity = Table('place_amenity', metadata=Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True,
+                                 nullable=False)
+                         )
+
+    amenities = relationship(
+        "Amenity",
+        secondary=place_amenity,
+        viewonly=False)
+
+
+    @property
+    def amenities(self):
+        """
+        """
+        amenities = models.storage.all(Amenity)
+        d = {}
+        for k,v in amenities.items():
+            if v.amenity_ids == self.id:
+                d[k] = v
+        return(d)
+
+    @amenities.setter
+    def amenities(self, obj):
+        """
+        """
+        if Amenity == type(obj):
+            self.amenity_ids.append(obj.id)
 
     @property
     def reviews(self):
