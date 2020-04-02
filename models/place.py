@@ -2,6 +2,8 @@
 """This is the place class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, ForeignKey, String, Float
+from sqlalchemy.orm import relationship
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -31,3 +33,20 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    reviews = relationship(
+        "Review",
+        cascade="all,delete",
+        backref='place'
+    )
+
+    @property
+    def reviews(self):
+        """Returns the list of Review instances with place_id equals to
+        the current Place.id.
+        """
+        reviews = models.storage.all(Review)
+        d = {}
+        for k, v in reviews.items():
+            if v.place_id == self.id:
+                d[k] = v
+        return(d)
