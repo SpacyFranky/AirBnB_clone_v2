@@ -72,5 +72,8 @@ Ex:
 * All files are executable
 ## Python Unit Tests
 * There are still no unit tests for this project
+## SQL Scripts
+* All files were executed on Ubuntu 14.04 LTS using MySQL 5.7 (version 5.7.8-rc)
+* Files were executed with SQLAlchemy version 1.2.x
 ## New Stuff
 * In this updated of HBNB 2.0 (Air_BnB) we created a database storage engine with mysql (using sqlalchemy)
