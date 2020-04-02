@@ -34,7 +34,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    # amenity_ids = []
+    amenity_ids = []
     reviews = relationship(
         "Review",
         cascade="all,delete",
@@ -56,7 +56,7 @@ class Place(BaseModel, Base):
 
     amenities = relationship(
         "Amenity",
-        secondary=place_amenity,
+        secondary="place_amenity",
         viewonly=False)
 
 
@@ -67,7 +67,7 @@ class Place(BaseModel, Base):
         amenities = models.storage.all(Amenity)
         d = []
         for k,v in amenities.items():
-            if v.id == self.id:
+            if v.id in self.amenity_ids:
                 d[k] = v
         return(d)
 
