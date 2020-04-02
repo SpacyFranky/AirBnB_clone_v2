@@ -65,3 +65,10 @@ Ex:
 * How to map a Python Class to a MySQL table
 * How to handle 2 different storage engines with the same codebase
 * How to use environment variables
+## Python Scripts
+* Used editor: emacs
+* All files were interpreted/compiled on Ubuntu 14.04 LTS using python3 (version 3.4.3)
+* Your code should use the PEP 8 style (version 1.7.*)
+* All files are executable
+## Python Unit Tests
+* There are still no unit tests for this project
