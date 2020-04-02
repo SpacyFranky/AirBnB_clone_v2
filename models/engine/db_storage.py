@@ -21,7 +21,7 @@ class DBStorage:
 
     __engine = None
     __session = None
-    my_classes = ["State", "City", "User"]
+    my_classes = ["State", "City", "User", "Place"]
 
     def __init__(self):
         """Constructor of the DBStorage class.
