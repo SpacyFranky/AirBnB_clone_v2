@@ -81,14 +81,10 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        print('-------------------- DICT I -----------------')
-        print(my_dict)
         try:
             del my_dict["_sa_instance_state"]
         except KeyError:
             pass
-        print('-------------------- DICT II -----------------')
-        print(my_dict)
         return my_dict
 
     def delete(self):
