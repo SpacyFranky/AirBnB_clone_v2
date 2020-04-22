@@ -52,8 +52,6 @@ def python(text):
 def number(n):
     """prints "n is a number" only if n in an integer
     """
-    #n = int(n)
-    #if type(n) is int:
     return("{} is a number".format(n))
 
 if __name__ == '__main__':
