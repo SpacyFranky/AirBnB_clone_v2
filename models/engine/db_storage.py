@@ -79,3 +79,10 @@ class DBStorage:
         )
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    """Updating engine before using Flask to display HBNB data"""
+    def close(self):
+        """calls remove() method on the private session attribute 
+           self.__session
+        """
+        self.__session.close()

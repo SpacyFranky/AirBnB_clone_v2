@@ -2,10 +2,11 @@
 """
 This is the state class.
 """
+from os import getenv
 from models.base_model import BaseModel, Base
+from models.city import City
 from sqlalchemy import Column, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
-from models.city import City
 
 
 class State(BaseModel, Base):
@@ -21,13 +22,14 @@ class State(BaseModel, Base):
         backref="state"
     )
 
-    @property
-    def cities(self):
-        """Returns the list of Cities with the correspondant state_id
-        """
-        cities = models.storage.all(City)
-        d = {}
-        for k, v in cities.items():
-            if v.state_id == self.id:
-                d[k] = v
-        return(d)
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            """Returns the list of Cities with the correspondant state_id
+            """
+            cities = models.storage.all(City)
+            d = {}
+            for k, v in cities.items():
+                if v.state_id == self.id:
+                    d[k] = v
+            return(d)
